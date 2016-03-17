@@ -160,19 +160,22 @@ do_merge_push() {
 
 # ----------------------- work start ---------------------------#
 
-export GIT_WORK_TREE=/home/alexs/lsk/kernel
-export GIT_DIR=$GIT_WORK_TREE/.git/
-#export monitor="alex.shi@linaro.org"
-export monitor="alex.shi@linaro.org mark.brown@linaro.org"
-
 #Get VER and TOPIC from input
 VER=$1
 TOPIC=$2
 
+if [ -z "$GIT_WORK_TREE" -o -z "$GIT_DIR" -o -z "$monitor" ]; then
+	echo "one of ENV value null, please check"
+	echo GIT_WORK_TREE=$GIT_WORK_TREE
+	echo GIT_DIR=$GIT_DIR
+	echo monitor=$monitor
+	exit 1
+fi
+
 #Only support current LSK version
-if [ "$VER" != '3.10' -a  "$VER" != '3.14' -a "$VER" != '3.18' -a "$VER" != '4.1' -a "$VER" != '4.4' ]; then
+if [ "$VER" != '3.14' -a "$VER" != '3.18' -a "$VER" != '4.1' -a "$VER" != '4.4' ]; then
 	print_usage;
-	exit
+	exit 1
 fi
 
 do_merge_push $VER $TOPIC

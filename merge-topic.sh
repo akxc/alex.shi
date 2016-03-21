@@ -92,7 +92,7 @@ do_merge_push() {
 	fi
 
 	if ! need_merge;then
-		return 1;
+		return 0;
 	fi
 
 	# Do merging

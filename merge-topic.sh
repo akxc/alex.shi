@@ -98,8 +98,10 @@ do_merge_push() {
 	# Do merging
 	# Since rt is maintained by Anders Roxell, and it is easy to have conflict during merging
 	# it is better to left the job to Ander.
+	# The rt branch wasn't released often, the branch looks a bit out of date, so start regular
+	# rt by ourself.
 	mergee=$TOPIC
-	for x in base android; do
+	for x in base android rt; do
 
 		#we only merge $TOPIC to base lsk, and then merge base lsk to others
 		merger=${lsk[$x]}

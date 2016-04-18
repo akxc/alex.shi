@@ -59,7 +59,7 @@ check_merger() {
 build_testing() {
 
 	# only merge LTS and no merge error, so ...
-	[ $NOTESTING -eq 1 ] && return 0
+	[ $NOTESTING -eq 1 -o "$NOTESTING" = "no" ] && return 0
 
 	pushd $PWD;
 	if cd $GIT_WORK_TREE &&
@@ -163,6 +163,7 @@ do_merge_push() {
 #Get VER and TOPIC from input
 VER=$1
 TOPIC=$2
+NOTESTING=$3
 
 if [ -z "$GIT_WORK_TREE" -o -z "$GIT_DIR" -o -z "$monitor" ]; then
 	echo "one of ENV value null, please check"

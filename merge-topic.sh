@@ -45,7 +45,8 @@ get_br_name() {
 # Prepare a clean local branch before topic merging
 check_merger() {
 	local merger="$1"
-	echo "# git checking out $merger" && git checkout $merger || return 1
+	echo "# git checking out $merger"
+	git checkout $merger || return 1
 	git pull || return 1
 
 	local gdiff=`git log --oneline origin/$merger...HEAD`

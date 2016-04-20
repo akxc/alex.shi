@@ -12,6 +12,7 @@ for i in $pickedcommit; do
 
 	for f in $fixid; do
 		# did it pick already? otherwise print out the fix commit id.
-		git log --oneline --grep=$f ${1}.. || echo $f
+		gotfix=`git log --oneline --grep=$f ${1}..`
+		[ -z "$gotfix" ] && echo $f
 	done
 done

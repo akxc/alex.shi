@@ -7,5 +7,11 @@
 
 pickedcommit=`git log --reverse ${1}.. | grep 'cherry picked from commit' | awk  '{print $5}'`
 for i in $pickedcommit; do
-	git log --oneline --grep=${i:0:7} ${1}..${2}
+	# any commit mentioned picked commit $i?
+	fixid=`git log --oneline --grep=${i:0:7} ${1}..${2} | awk '{print $1}'`
+
+	for f in $fixid; do
+		# did it pick already? otherwise print out the fix commit id.
+		git log --oneline --grep=$f ${1}.. || echo $f
+	done
 done

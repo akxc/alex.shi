@@ -10,7 +10,7 @@ pickedcommit=`git log --reverse ${1}.. | grep 'cherry picked from commit' | awk 
 
 for i in $pickedcommit; do
 	# any commit mentioned the picked commit $i?
-	fix=`git log --oneline --grep=${i:0:7} ${1}..${2}`
+	fix=`git log --oneline --reverse --grep=${i:0:7} ${1}..${2}`
 
 	for f in $fix; do
 		# was it picked already? or we may need this commit.

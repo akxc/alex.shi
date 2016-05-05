@@ -104,7 +104,7 @@ do_merge_push() {
 	mergee=$TOPIC
 	for x in base android rt; do
 		# skip rt branch merge on 3.18 lsk, it is not already yet.
-		[ $VER = '3.18' -a $x = 'rt' ] && return;
+		[ $VER = '3.18' -a $x = 'rt' ] && break;
 
 		#we only merge $TOPIC to base lsk, and then merge base lsk to others
 		merger=${lsk[$x]}

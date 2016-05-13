@@ -10,8 +10,10 @@ qemucmd="qemu-system-aarch64 -M virt -cpu cortex-a57 -m 512 -kernel /mmkernels/k
 
 function buildkernel () {
 	cd $kernelsource
+	#make ARCH=arm64 defconfig
 	scripts/config -e CONFIG_RANDOMIZE_BASE
-	make -s ARCH=arm64  olddefconfig && make -s ARCH=arm64 CROSS_COMPILE=aarch64-linux- -j 16 
+	scripts/config --set-str CONFIG_INITRAMFS_SOURCE /home/alexs/boards/buildroot.git/output/images/rootfs.cpio
+	make -s ARCH=arm64 olddefconfig && make -s ARCH=arm64 CROSS_COMPILE=aarch64-linux- -j 16 
 }
 
 function runqemu() {

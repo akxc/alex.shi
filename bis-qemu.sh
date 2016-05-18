@@ -12,13 +12,14 @@ function buildkernel () {
 	cd $kernelsource
 	#make ARCH=arm64 defconfig
 	scripts/config -e CONFIG_RANDOMIZE_BASE
-	scripts/config --set-str CONFIG_INITRAMFS_SOURCE /home/alexs/boards/buildroot.git/output/images/rootfs.cpio
-	make -s ARCH=arm64 olddefconfig && make -s ARCH=arm64 CROSS_COMPILE=aarch64-linux- -j 16 
+	#scripts/config --set-str CONFIG_INITRAMFS_SOURCE /home/alexs/boards/buildroot.git/output/images/rootfs.cpio
+	#make -s ARCH=arm64 olddefconfig && make -s ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j 16
+	make -s ARCH=arm64 olddefconfig && make -s ARCH=arm64 CROSS_COMPILE=aarch64-linux- -j 16
 }
 
 function runqemu() {
 	eval $qemucmd
-	grep "Starting logging" qemu.log
+	grep "NET: Registered protocol family" qemu.log
 }
 
 if buildkernel ; then

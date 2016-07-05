@@ -23,15 +23,15 @@ EOF
 # Return 0 if there is an exclusive commit on $TOPIC from LSK base;
 # otherwise return 1;
 need_merge(){
-	local lastci=$(git rev-list --max-count=1 $TOPIC)
+	local lastci=$(git rev-list --max-count=1 $mergee)
 
 	[ -z "$lastci" ] && return 1
 
-	local found=`git branch -r --contains $lastci origin/${lsk[base]}`
+	local found=`git branch -r --contains $lastci origin/$merger}`
 
         [ -z "$found" ] && return 0
 
-	echo "### $TOPIC merged into LSK already!"
+	echo "### $mergee merged into $merger already!"
 	return 1
 }
 
@@ -92,10 +92,6 @@ do_merge_push() {
 		subver=`git log $TOPIC -1 | grep Linux | awk '{print $2}'`
 	fi
 
-	if ! need_merge;then
-		return 0;
-	fi
-
 	# Do merging
 	# Since rt is maintained by Anders Roxell, and it is easy to have conflict during merging
 	# it is better to left the job to Ander.
@@ -109,6 +105,8 @@ do_merge_push() {
 		#we only merge $TOPIC to base lsk, and then merge base lsk to others
 		merger=${lsk[$x]}
 		[ $x != 'base' ] && mergee=${lsk[base]}
+
+		need_merge || break;
 
 		#only written merge message for lts to base lsk branch.
 		if [ -n "$subver" -a $x == 'base' ];then
@@ -154,7 +152,7 @@ do_merge_push() {
 	# Do push
 	if [ -n "$PUSHB" ]; then
 		if git push origin $PUSHB &> /tmp/push.log; then
-			echo "Pushed $PUSHB" | mutt -s "merged and pushed $PUSHB in $GIT_DIR" $monitor
+			echo "Pushed $PUSHB" | mutt -s "merged and pushed $GIT_DIR" $monitor
 		else
 			cat /tmp/push.log | mutt -s "push failed $PUSHB in $GIT_DIR" $monitor
 		fi

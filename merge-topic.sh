@@ -27,7 +27,7 @@ need_merge(){
 
 	[ -z "$lastci" ] && return 1
 
-	local found=`git branch -r --contains $lastci origin/$merger}`
+	local found=`git branch -r --contains $lastci origin/$merger`
 
         [ -z "$found" ] && return 0
 

@@ -13,8 +13,11 @@ git remote set-branches --add lts linux-3.14.y
 
 git remote update
 
-ln -s /home/alexs/kernel-backups/update-pb.sh
-ln -s /home/alexs/linux/backup/get-to-cc.sh
-ln -s /home/alexs/GIT/check-commits.sh
-ln -s /home/alexs/lsk/arm64/juice/arm64-juice.sh
-ln -s /home/alexs/lsk/arm64/OE/arm64-OE-kernel.sh
+ln -s /home/alexs/lsk/scripts/make-android.sh
+ln -s /home/alexs/boards/mt8173/patches-upstream/
+ln -s /home/alexs/lsk/scripts/test-making.sh
+ln -s /home/alexs/lsk/scripts/update-pb.sh
+ln -s /home/alexs/boards/FVP/OE/arm64-OE-kernel.sh
+ln -s /home/alexs/lsk/scripts/get-to-cc.sh
+ln -s /home/alexs/lsk/scripts/insertcc2patch.sh
+

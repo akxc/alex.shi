@@ -28,3 +28,7 @@ mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n 'Ubuntu
 fi
 
 
+
+sminicom xxxx
+account
+alexs/x

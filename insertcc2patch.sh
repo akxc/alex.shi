@@ -4,7 +4,8 @@
 # This script will insert the related To:/Cc: list for patches
 # used under the kernel source directory for scripts/get_maintainer.pl
 
-# usage: ./$0 prepared_patch.patch
+# usage: ./$0 prepared_patch.patch "A <a@a.com>; b@b.org"
+# the second parameter is extra Cc list email address with space as seperator
 
 tmpfile=/tmp/`date +%s`
 tofile=${tmpfile}_to
@@ -17,6 +18,15 @@ scripts/get_maintainer.pl $1 > $tmpfile
 
 cp $tmpfile $tofile
 cp $tmpfile $ccfile
+
+if [ -n "$2" ]; then
+	extra_cc="$2"
+	while IFS=';' read -ra ADDR; do
+		for i in "${ADDR[@]}"; do
+			echo "$i" >> $ccfile
+		done
+	done <<< "$extra_cc"
+fi
 
 # left maintainers in tofile and commiters in ccfile
 sed -i -e "/maintainer/d" -e 's/(.*)//g' $ccfile 

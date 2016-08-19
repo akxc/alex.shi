@@ -2,8 +2,7 @@
 # Copyright Alex Shi <alex.shi@linaro.org>
 #
 # This script will insert the related To:/Cc: list for patches
-# used under the kernel source directory
-# then, we have scripts/get_maintainer.pl
+# used under the kernel source directory for scripts/get_maintainer.pl
 
 # usage: ./$0 prepared_patch.patch
 
@@ -14,7 +13,7 @@ ccfile=${tmpfile}_cc
 # someone don't use the old email address now.
 blacklist="glommer@redhat.com alex.shi@intel.com"
 
-scripts/get_maintainer.pl $@ > $tmpfile
+scripts/get_maintainer.pl $1 > $tmpfile
 
 cp $tmpfile $tofile
 cp $tmpfile $ccfile

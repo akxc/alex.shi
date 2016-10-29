@@ -118,7 +118,7 @@ do_merge_push() {
 
 		echo "### local branch preparation"
 		if ! check_merger $merger; then
-			echo "Failed merging on $merger: local branch error !!!" |
+			echo "Failed merging on $merger: commit different !!!" |
 				mutt -s "merge failed on $mergee to $merger in $GIT_DIR" $monitor
 			break;
 		fi

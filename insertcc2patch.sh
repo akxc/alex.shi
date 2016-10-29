@@ -5,7 +5,7 @@
 # used under the kernel source directory for scripts/get_maintainer.pl
 
 # usage: ./$0 prepared_patch.patch "A <a@a.com>; b@b.org"
-# the second parameter is extra Cc list email address with space as seperator
+# the second parameter is extra Cc list email address with ';' as seperator
 
 tmpfile=/tmp/`date +%s`
 tofile=${tmpfile}_to

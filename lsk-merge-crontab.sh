@@ -2,7 +2,7 @@
 
 export GIT_WORK_TREE=/home/alexs/lsk/kernel
 export GIT_DIR=$GIT_WORK_TREE/.git/
-export monitor="alex.shi@linaro.org mark.brown@linaro.org"
+export monitor="alex.shi@linaro.org mark.brown@linaro.org amit.pundir@linaro.org"
 
 merge_log=~/lsk/lsk-auto-pick.log
 

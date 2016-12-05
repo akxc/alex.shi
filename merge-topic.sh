@@ -93,15 +93,8 @@ do_merge_push() {
 	fi
 
 	# Do merging
-	# Since rt is maintained by Anders Roxell, and it is easy to have conflict during merging
-	# it is better to left the job to Ander.
-	# The rt branch wasn't released often, the branch looks a bit out of date, so start regular
-	# rt by ourself.
 	mergee=$TOPIC
 	for x in base android rt; do
-		# skip rt branch merge on 3.18 lsk, it is not already yet.
-		#[ $VER = '3.18' -a $x = 'rt' ] && break;
-
 		#we only merge $TOPIC to base lsk, and then merge base lsk to others
 		merger=${lsk[$x]}
 		[ $x != 'base' ] && mergee=${lsk[base]}

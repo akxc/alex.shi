@@ -123,14 +123,18 @@ do_merge_push() {
 
 			# clean up the dirty work tree for next kernel merge
 			git merge --abort
-			break;	
+			#try rt if merge failed on android
+			[ $x == 'base' ] && break
+			continue
 		fi
 
 		#Run build testing
 		if ! build_testing &> /tmp/build.log ; then
 			cat /tmp/build.log |
 				mutt -s "build failed on $mergee to $merger in $GIT_DIR" $monitor
-			break;	
+			#try rt if merge failed on android
+			[ $x == 'base' ] && break
+			continue
 		fi
 
 		# Set remote push branch: remote_br

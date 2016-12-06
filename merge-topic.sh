@@ -99,7 +99,10 @@ do_merge_push() {
 		merger=${lsk[$x]}
 		[ $x != 'base' ] && mergee=${lsk[base]}
 
-		need_merge || break;
+		if !need_merge; then
+			[ $x == 'base' ] && break
+			continue
+		fi
 
 		#only written merge message for lts to base lsk branch.
 		if [ -n "$subver" -a $x == 'base' ];then
@@ -113,7 +116,8 @@ do_merge_push() {
 		if ! check_merger $merger; then
 			echo "Failed merging on $merger: commit different !!!" |
 				mutt -s "merge failed on $mergee to $merger in $GIT_DIR" $monitor
-			break;
+			[ $x == 'base' ] && break
+			continue
 		fi
 
 		#Do merge

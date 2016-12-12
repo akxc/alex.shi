@@ -99,7 +99,7 @@ do_merge_push() {
 		merger=${lsk[$x]}
 		[ $x != 'base' ] && mergee=${lsk[base]}
 
-		if !need_merge; then
+		if ! need_merge; then
 			[ $x == 'base' ] && break
 			continue
 		fi

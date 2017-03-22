@@ -41,7 +41,7 @@ function searchcid4topic() {
 		[ -z "$fixed" ] && echo $f >> $targetcids
 	done
 
-	cat $targetcids | mutt -s "find fix condidates for $TOPIC " $monitors
+	cat $targetcids | mutt -s "$TOPIC: fix condidates" $monitors
 }
 
 for version in 4.1 4.4 4.9;

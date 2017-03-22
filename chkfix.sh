@@ -30,7 +30,8 @@ function searchcid4topic() {
 	echo -e "\n----------all fixing commits-----------\n" > $targetcids
 	cmd="git log --oneline --reverse ${patterns} ${LTSBR}..${UPSTREAMBR} &>> $targetcids"
 	if ! eval $cmd; then
-		echo -e "check $TOPIC failed on command \n $cmd\n" >>$targetcids
+		echo -e "check $TOPIC failed on command \n $cmd\n" |
+				mutt -s "Failed on $TOPIC checking" $monitors
 		return
 	fi
 	echo -e "\n----------what we missed-----------\n" >> $targetcids

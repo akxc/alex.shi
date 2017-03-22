@@ -64,5 +64,6 @@ LTSBR="lts/linux-${version}.y"
 	topics=`git branch -r | grep "v$version/topic/"`
 	for t in $topics; do
 		searchcid4topic $t
+		unset IFS;
 	done
 done

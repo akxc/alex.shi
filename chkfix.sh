@@ -46,9 +46,7 @@ function searchcid4topic() {
 	cat $targetcids | mutt -s "$TOPIC: fix condidates" $monitors
 }
 
-for version in 4.1 4.4 4.9;
-do
-
+for version in 4.1 4.4 4.9; do
 LTSBR="lts/linux-${version}.y"
 	topics=`git branch -r | grep "v$version/topic/"`
 	for TOPIC in $topics; do

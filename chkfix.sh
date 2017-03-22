@@ -19,6 +19,7 @@ function searchcid4topic() {
 	PICKEDCID=`git log --reverse ${LTSBR}..${TOPIC} | \
 		grep 'cherry picked from commit' | awk  '{print $5}'`
 
+	local patterns;
 	for i in $PICKEDCID; do
 		patterns="$patterns --grep=\"\<${i:0:7}\""
 	done

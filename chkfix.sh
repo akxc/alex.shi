@@ -20,7 +20,7 @@ function searchcid4topic() {
 		grep 'cherry picked from commit' | awk  '{print $5}'`
 
 	for i in $PICKEDCID; do
-		patterns="$patterns --grep=${i:0:7}"
+		patterns="$patterns --grep=\"\<${i:0:7}\""
 	done
 
 	#[ -z "$patterns" ] && return
@@ -37,7 +37,7 @@ function searchcid4topic() {
 	for f in `cat $targetcids`; do
 		# only check the fix cid which isn't in our $topic.
 		[ "${f:0:7}" = "-------" ] && continue;
-		fixed=$(git log --oneline --grep=${f:0:7} ${LTSBR}..${TOPIC})
+		fixed=$(git log --oneline --grep="\<${f:0:7}" ${LTSBR}..${TOPIC})
 		[ -z "$fixed" ] && echo $f >> $targetcids
 	done
 

@@ -13,12 +13,24 @@ function searchcid4topic() {
 	local topic="$1"
 	IFS=$'\n'
 	targetcids="/tmp/$topic"
-	mkdir -p "$(dirname "$targetcids")" && touch "$targetcids"
+	mkdir -p "$(dirname $targetcids)" && touch "$targetcids"
 	> $targetcids
 
-	#get all picked commits for this topic
-	pickedid=`git log --reverse ${LTSBR}..${topic} | \
+	#get all cherry-picked commits for this topic
+	pickedid=`git log --reverse ${LTSBR}..${topic} |
 		grep 'cherry picked from commit' | awk  '{print $5}'`
+
+	#some branch using "commit xxxxx upstream" to mark pickup
+	if [ "$pickedid" = "" ]; then
+		pickedid=`git log --reverse ${LTSBR}..${topic} |
+			grep -e "^    commit [a-z0-9]\{40\} upstream.$" | awk '{print $2}'`
+	fi
+
+	#no formated pickup found
+	if [ -z "$pickedid" ];then
+		echo "no formatted picked cid found" | mutt -s "no formatted picking in $topic" $monitors
+		return
+	fi
 
 	local patterns;
 	for i in $pickedid; do

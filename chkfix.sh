@@ -10,32 +10,46 @@ export GIT_DIR=$GIT_WORK_TREE/.git/
 UPSTREAMBR=linux
 monitors="alex.shi@linaro.org"
 
-function searchcid() {
+function searchcid4topic() {
 	IFS=$'\n'
 	targetcids="/tmp/$TOPIC"
 	mkdir -p "$(dirname "$targetcids")" && touch "$targetcids"
 	> $targetcids
-	for i in $PICKEDCID; do
-		# any commit mentioned a picked commit $i?
-		fixes=`git log --oneline --reverse --grep=${i:0:7} ${LTSBR}..${UPSTREAMBR}`
 
-		for f in $fixes; do
-			# only check the fix cid which isn't in our $topic.
-			gotfix=`git log --oneline --grep=${f:0:7} ${LTSBR}..${TOPIC}`
-			[ -z "$gotfix" ] && echo $f >> $targetcids
-		done
+	PICKEDCID=`git log --reverse ${LTSBR}..${TOPIC} | \
+		grep 'cherry picked from commit' | awk  '{print $5}'`
+
+	for i in $PICKEDCID; do
+		patterns="$patterns --grep=${i:0:7}"
 	done
+
+	#[ -z "$patterns" ] && return
+
+	# get all commits which mentioned a picked commit $patterns
+	echo -e "\n----------all fixing commits-----------\n" > $targetcids
+	cmd="git log --oneline --reverse ${patterns} ${LTSBR}..${UPSTREAMBR} &>> $targetcids"
+	if ! eval $cmd; then
+		echo -e "check $TOPIC failed on command \n $cmd\n" >>$targetcids
+		return
+	fi
+	echo -e "\n----------what we missed-----------\n" >> $targetcids
+
+	for f in `cat $targetcids`; do
+		# only check the fix cid which isn't in our $topic.
+		[ "${f:0:7}" = "-------" ] && continue;
+		fixed=$(git log --oneline --grep=${f:0:7} ${LTSBR}..${TOPIC})
+		[ -z "$fixed" ] && echo $f >> $targetcids
+	done
+
 	cat $targetcids | mutt -s "find fix condidates for $TOPIC " $monitors
 }
 
-#for version in 4.1 4.4 4.9;
-for version in 4.4
+for version in 4.1 4.4 4.9;
 do
-	LTSBR="lts/linux-${version}.y"
+
+LTSBR="lts/linux-${version}.y"
 	topics=`git branch -r | grep "v$version/topic/"`
 	for TOPIC in $topics; do
-		PICKEDCID=`git log --reverse ${LTSBR}..${TOPIC} | \
-			grep 'cherry picked from commit' | awk  '{print $5}'`
-		searchcid
+		searchcid4topic
 	done
 done

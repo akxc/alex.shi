@@ -20,7 +20,7 @@ usage example: 	#to merge&push a feature branch to 3.10 lsk-x-test branches
 EOF
 }
 
-# Return 0 if there is an exclusive commit on $TOPIC from LSK base;
+# Return 0 if there is an exclusive commit on $TARGET from LSK base;
 # otherwise return 1;
 need_merge(){
 	local lastci=$(git rev-list --max-count=1 $mergee)
@@ -77,25 +77,25 @@ build_testing() {
 	return 1
 }
 
-# Merge $TOPIC branch and push to offical LSK 
+# Merge $TARGET branch and push to offical LSK
 do_merge_push() {
 
 	declare -A lsk merged
 	get_br_name
 
-	# no TOPIC input, means to merge lts branch
-	if [ -z "$TOPIC" ] ;then
+	# no TARGET input, means to merge lts branch
+	if [ -z "$TARGET" ] ;then
 		#don't need test if only merge LTS
 		NOTESTING=1
-		TOPIC="lts/linux-${VER}.y"
+		TARGET="lts/linux-${VER}.y"
 		# subver like '3.10.51'
-		subver=`git log $TOPIC -1 | grep Linux | awk '{print $2}'`
+		subver=`git log $TARGET -1 | grep Linux | awk '{print $2}'`
 	fi
 
 	# Do merging
-	mergee=$TOPIC
+	mergee=$TARGET
 	for x in base android rt; do
-		#we only merge $TOPIC to base lsk, and then merge base lsk to others
+		#we only merge $TARGET to base lsk, and then merge base lsk to others
 		merger=${lsk[$x]}
 		[ $x != 'base' ] && mergee=${lsk[base]}
 
@@ -143,8 +143,8 @@ do_merge_push() {
 
 		# Set remote push branch: remote_br
 		# feature only can merge to remote -test branch !!!
-		[ "$TOPIC" == "lts/linux-${VER}.y" ] && remote_br=${lsk[$x]}
-		[ "$TOPIC" != "lts/linux-${VER}.y" ] &&	remote_br=${lsk[$x]}-test
+		[ "$TARGET" == "lts/linux-${VER}.y" ] && remote_br=${lsk[$x]}
+		[ "$TARGET" != "lts/linux-${VER}.y" ] &&	remote_br=${lsk[$x]}-test
 		PUSHB="$PUSHB ${lsk[$x]}:$remote_br"
 
 		echo "merge and build test done on $mergee to $merger in $GIT_DIR"
@@ -164,9 +164,9 @@ do_merge_push() {
 
 # ----------------------- work start ---------------------------#
 
-#Get VER and TOPIC from input
+#Get VER and TARGET from input
 VER=$1
-TOPIC=$2
+TARGET=$2
 NOTESTING=$3
 
 if [ -z "$GIT_WORK_TREE" -o -z "$GIT_DIR" -o -z "$monitor" ]; then
@@ -183,5 +183,5 @@ if [ "$VER" != '4.9' -a "$VER" != '3.18' -a "$VER" != '4.1' -a "$VER" != '4.4' ]
 	exit 1
 fi
 
-do_merge_push $VER $TOPIC
+do_merge_push $VER $TARGET
 

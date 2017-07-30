@@ -108,7 +108,6 @@ do_merge_push() {
 		fi
 
 		if ! need_merge; then
-			[ $x == 'base' ] && break
 			continue
 		fi
 

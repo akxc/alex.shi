@@ -99,6 +99,14 @@ do_merge_push() {
 		merger=${lsk[$x]}
 		[ $x != 'base' ] && mergee=${lsk[base]}
 
+		#don't rt kernel except 4.9 version
+		#we get patch from rt 4.9 version instead of LTS
+		if [ $VER == '4.9' -a $x == 'rt' ];then
+			mergee="rt/linux-${VER}.y-rt"
+		elif [ $x == 'rt' ]; then
+			continue
+		fi
+
 		if ! need_merge; then
 			[ $x == 'base' ] && break
 			continue
@@ -178,7 +186,7 @@ if [ -z "$GIT_WORK_TREE" -o -z "$GIT_DIR" -o -z "$monitor" ]; then
 fi
 
 #Only support current LSK version
-if [ "$VER" != '4.9' -a "$VER" != '3.18' -a "$VER" != '4.1' -a "$VER" != '4.4' ]; then
+if [ "$VER" != '4.9' -a "$VER" != '3.18' -a "$VER" != '4.4' ]; then
 	print_usage;
 	exit 1
 fi

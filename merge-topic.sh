@@ -97,7 +97,7 @@ do_merge_push() {
 	for x in base android rt; do
 		#we only merge $TARGET to base lsk, and then merge base lsk to others
 		merger=${lsk[$x]}
-		[ $x != 'base' ] && mergee=${lsk[base]}
+		[ $x == 'android' ] && mergee=${lsk[base]}
 
 		#don't rt kernel except 4.9 version
 		#we get patch from rt 4.9 version instead of LTS

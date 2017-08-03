@@ -107,6 +107,9 @@ do_merge_push() {
 			continue
 		fi
 
+		#lsk 4.9 have no android version
+		[ $VER == '4.9' -a $x == 'android' ] && continue
+
 		if ! need_merge; then
 			continue
 		fi

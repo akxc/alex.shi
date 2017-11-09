@@ -99,10 +99,9 @@ do_merge_push() {
 		merger=${lsk[$x]}
 		[ $x == 'android' ] && mergee=${lsk[base]}
 
-		#don't rt kernel except 4.9 version
-		#we get patch from rt 4.9 version instead of LTS
-		if [ $VER == '4.9' -a $x == 'rt' ];then
-			mergee="rt/linux-${VER}.y-rt"
+		#merge rt kernel from rt-stable tree
+		if [ $VER != '3.18' -a $x == 'rt' ];then
+			mergee="rt-stable/v${VER}-rt"
 		elif [ $x == 'rt' ]; then
 			continue
 		fi

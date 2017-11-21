@@ -109,6 +109,9 @@ do_merge_push() {
 		#lsk 4.9 have no android version
 		[ $VER == '4.9' -a $x == 'android' ] && continue
 
+		#skip 3.18 kernel update for android
+		[ $VER == '3.18' -a $x == 'android' ] && continue
+
 		if ! need_merge; then
 			continue
 		fi

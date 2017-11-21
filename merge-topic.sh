@@ -162,7 +162,8 @@ do_merge_push() {
 	# Do push
 	if [ -n "$PUSHB" ]; then
 		if git push origin $PUSHB &> /tmp/push.log; then
-			echo "Pushed $PUSHB" | mutt -s "merged and pushed $GIT_DIR" $monitor
+			echo "Pushed $remote_br from $mergee" |
+				mutt -s "merged and pushed $GIT_DIR" $monitor
 		else
 			cat /tmp/push.log | mutt -s "push failed $PUSHB in $GIT_DIR" $monitor
 		fi

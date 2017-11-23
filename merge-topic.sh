@@ -106,8 +106,9 @@ do_merge_push() {
 			continue
 		fi
 
-		#lsk 4.9 have no android version
+		#lsk 4.9/4.14 have no android version
 		[ $VER == '4.9' -a $x == 'android' ] && continue
+		[ $VER == '4.14' -a $x == 'android' ] && continue
 
 		#skip 3.18 kernel update for android
 		[ $VER == '3.18' -a $x == 'android' ] && continue
@@ -191,7 +192,7 @@ if [ -z "$GIT_WORK_TREE" -o -z "$GIT_DIR" -o -z "$monitor" ]; then
 fi
 
 #Only support current LSK version
-if [ "$VER" != '4.9' -a "$VER" != '3.18' -a "$VER" != '4.4' ]; then
+if [ "$VER" != '4.9' -a "$VER" != '3.18' -a "$VER" != '4.4' -a "$VER" != '4.14' ]; then
 	print_usage;
 	exit 1
 fi

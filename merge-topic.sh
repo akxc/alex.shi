@@ -97,21 +97,26 @@ do_merge_push() {
 	for x in base android rt; do
 		#we only merge $TARGET to base lsk, and then merge base lsk to others
 		merger=${lsk[$x]}
-		[ $x == 'android' ] && mergee=${lsk[base]}
 
-		#merge rt kernel from rt-stable tree
-		if [ $VER != '3.18' -a $x == 'rt' ];then
-			mergee="rt-stable/v${VER}-rt"
-		elif [ $x == 'rt' ]; then
-			continue
+		#merge rt kernel from rt-stable or rt devel tree
+		if [ $x == 'rt' ]; then
+			case $VER in
+			'4.14')
+				# use devel rt for 4.14 rt
+				mergee="rt/linux-${VER}.y-rt"
+				;;
+			'4.4'|'4.9')
+				mergee="rt-stable/v${VER}-rt"
+				;;
+			'3.18')
+				continue;;
+			esac
+		elif [ $x == 'android' ]; then
+			# only support 4.4 android now
+			[ $VER != '4.4' ] && continue
+
+			mergee=${lsk[base]}
 		fi
-
-		#lsk 4.9/4.14 have no android version
-		[ $VER == '4.9' -a $x == 'android' ] && continue
-		[ $VER == '4.14' -a $x == 'android' ] && continue
-
-		#skip 3.18 kernel update for android
-		[ $VER == '3.18' -a $x == 'android' ] && continue
 
 		if ! need_merge; then
 			continue

@@ -164,6 +164,7 @@ do_merge_push() {
 		[ "$TARGET" == "lts/linux-${VER}.y" ] && remote_br=${lsk[$x]}
 		[ "$TARGET" != "lts/linux-${VER}.y" ] &&	remote_br=${lsk[$x]}-test
 		PUSHB="$PUSHB ${lsk[$x]}:$remote_br"
+		MERGED="$MERGED merged $mergee into $merger;"
 
 		echo "merge and build test done on $mergee to $merger in $GIT_DIR"
 	done
@@ -171,8 +172,8 @@ do_merge_push() {
 	# Do push
 	if [ -n "$PUSHB" ]; then
 		if git push origin $PUSHB &> /tmp/push.log; then
-			echo "Pushed $remote_br from $mergee" |
-				mutt -s "merged and pushed $GIT_DIR" $monitor
+			echo "$MERGED" |
+				mutt -s "pushed $PUSHB in $GIT_DIR" $monitor
 		else
 			cat /tmp/push.log | mutt -s "push failed $PUSHB in $GIT_DIR" $monitor
 		fi

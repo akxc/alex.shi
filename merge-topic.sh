@@ -1,7 +1,13 @@
 #!/bin/bash
 #
 # This script is a engineering tool for lsk branches
-# merge and push work. If conflict happends, this tool will stop.
+# merge and push work. If conflict happends, this tool will stop and send notify
+# to monitors.
+#
+# lsk git://git.linaro.org/kernel/linux-linaro-stable.git
+# lts git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+# rt-stable https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.git
+# rt git://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git
 #
 # Request: 
 #	The working git tree either doesn't check out LSK branches,
@@ -134,7 +140,6 @@ do_merge_push() {
 		if ! check_merger $merger; then
 			echo "Failed merging on $merger: commit different !!!" |
 				mutt -s "merge failed on $mergee to $merger in $GIT_DIR" $monitor
-			[ $x == 'base' ] && break
 			continue
 		fi
 

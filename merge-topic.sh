@@ -109,7 +109,7 @@ do_merge_push() {
 			case $VER in
 			'4.14')
 				# use devel rt for 4.14 rt
-				mergee="rt/linux-${VER}.y-rt"
+				mergee="rt-devel/linux-${VER}.y-rt"
 				;;
 			'4.4'|'4.9')
 				mergee="rt-stable/v${VER}-rt"

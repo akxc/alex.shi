@@ -1,0 +1,12 @@
+#!/bin/bash
+
+IFS=$'\n'
+
+for i in `git log1 v4.14.3..linux-4.14.y-rt-rebase | cut -d' ' -f 2-`;
+do
+	grep -q -F "$i" commitsofv4.9-rt || echo $i;
+done
+
+
+#will print all but very first column:
+#awk '{$1=""; print $0}' somefile
